@@ -8,7 +8,8 @@ import {
 import React, {useEffect} from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useSelector} from 'react-redux';
-
+import {useNavigation} from '@react-navigation/native';
+import {isCart} from 'react-native';
 const {width, height} = Dimensions.get('screen');
 
 const Header = ({
@@ -17,10 +18,12 @@ const Header = ({
   rightIcon,
   onClickLeftIcon,
   onClickRightIcon,
+  isCart,
 }) => {
   const cartItems = useSelector(state => state.cart);
   console.log('ADD_TO_CART ====>', cartItems);
 
+  const navigation = useNavigation();
   return (
     <View style={styles.header}>
       <TouchableOpacity style={styles.btn}>
@@ -34,7 +37,13 @@ const Header = ({
         />
       </TouchableOpacity>
       <Text style={styles.title}>{title}</Text>
-      <TouchableOpacity style={styles.btn}>
+
+      <TouchableOpacity
+        style={styles.btn}
+        onPress={() => {
+          navigation.navigate('Cart');
+        }}
+        fr>
         <View
           style={{
             height: 16,
@@ -44,14 +53,7 @@ const Header = ({
           }}>
           <Text style={{color: '#fff'}}>{cartItems.data.length}</Text>
         </View>
-        <Icon
-          onPress={() => {
-            alert('add items');
-          }}
-          name={rightIcon}
-          size={30}
-          style={styles.icon}
-        />
+        <Icon name={rightIcon} size={30} style={styles.icon} />
       </TouchableOpacity>
     </View>
   );
@@ -73,6 +75,7 @@ const styles = StyleSheet.create({
   btn: {
     width: 30,
     height: 30,
+
     justifyContent: 'center',
   },
   icon: {

@@ -28,6 +28,9 @@ const Home = () => {
       .then(res => res.json())
       .then(json => {
         setProdducts(json);
+        json.map(item => {
+          item.qty = 1;
+        });
         dispatch(addProducts(json));
         // console.log('xxxxxxxxxxxxxxxxxxx', json);
       });

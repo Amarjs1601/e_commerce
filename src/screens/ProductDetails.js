@@ -72,6 +72,27 @@ const ProductDetails = props => {
               {/* {'Price' + ' : ' + '$' + route.params.data.price} */}
               {`₹${route.params.data.price}`}
             </Text>
+            <View style={styles.qtyBtn}>
+              <TouchableOpacity style={styles.btn} onPress={() => {}}>
+                <Text style={{fontSize: 18, fontWeight: '600', color: '#000'}}>
+                  -
+                </Text>
+              </TouchableOpacity>
+              <Text
+                style={{
+                  fontSize: 18,
+                  fontWeight: '600',
+                  color: '#000',
+                  alignSelf: 'center',
+                }}>
+                {'0'}
+              </Text>
+              <TouchableOpacity style={styles.btn} onPress={() => {}}>
+                <Text style={{fontSize: 18, fontWeight: '600', color: '#000'}}>
+                  +
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </ScrollView>
       </View>
@@ -87,6 +108,7 @@ const ProductDetails = props => {
           style={{color: selectHeart ? 'red' : '#000'}}
         />
       </TouchableOpacity>
+
       <View
         style={{
           position: 'absolute',
@@ -145,5 +167,18 @@ const styles = StyleSheet.create({
     right: 20,
     top: 80,
     fontWeight: '600',
+  },
+  qtyBtn: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  btn: {
+    padding: 7,
+    borderRadius: 5,
+    borderWidth: 1,
+    marginLeft: 8,
+    marginRight: 8,
+
+    // backgroundColor: 'red',
   },
 });
