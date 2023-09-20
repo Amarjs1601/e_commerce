@@ -11,11 +11,13 @@ import {
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import Header from '../common/Header';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {
   addItemsCart,
   reduceItemsFromCart,
   removeItemsFromCart,
 } from './redux/slices/CartSlice';
+import {useNavigation} from '@react-navigation/native';
 
 const RenderItem = ({item, index}) => {
   const dispatch = useDispatch();
@@ -95,6 +97,7 @@ const RenderItem = ({item, index}) => {
 };
 
 const Cart = () => {
+  const navigation = useNavigation();
   const cartItems = useSelector(state => state.cart);
   const [cartItem, setCartItem] = useState([]);
   // console.log('CART-ITEMS====>', cartItems.data);
@@ -107,7 +110,13 @@ const Cart = () => {
 
   return (
     <View style={styles.container}>
-      <Header title={'Cart Items'} />
+      <Header
+        title={'Cart Items'}
+        leftIcon={'arrow-left'}
+        onClickLeftIcon={() => {
+          navigation.goBack('Home');
+        }}
+      />
       <FlatList
         data={cartItem}
         renderItem={({item}) => <RenderItem item={item} />}

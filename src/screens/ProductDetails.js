@@ -18,6 +18,7 @@ import {addItemsCart} from './redux/slices/CartSlice';
 
 const ProductDetails = props => {
   const [selectHeart, setSelectHeart] = useState(false);
+  const [qty, setQty] = useState(1);
   console.log('props', props);
   const navigation = useNavigation();
   const route = useRoute();
@@ -73,8 +74,20 @@ const ProductDetails = props => {
               {`₹${route.params.data.price}`}
             </Text>
             <View style={styles.qtyBtn}>
-              <TouchableOpacity style={styles.btn} onPress={() => {}}>
-                <Text style={{fontSize: 18, fontWeight: '600', color: '#000'}}>
+              <TouchableOpacity
+                style={styles.btn}
+                onPress={() => {
+                  if (qty > 1) {
+                    setQty(qty - 1);
+                  }
+                }}>
+                <Text
+                  style={{
+                    fontSize: 18,
+                    fontWeight: '600',
+                    color: '#000',
+                    textAlign: 'center',
+                  }}>
                   -
                 </Text>
               </TouchableOpacity>
@@ -85,10 +98,20 @@ const ProductDetails = props => {
                   color: '#000',
                   alignSelf: 'center',
                 }}>
-                {'0'}
+                {qty}
               </Text>
-              <TouchableOpacity style={styles.btn} onPress={() => {}}>
-                <Text style={{fontSize: 18, fontWeight: '600', color: '#000'}}>
+              <TouchableOpacity
+                style={styles.btn}
+                onPress={() => {
+                  setQty(qty + 1);
+                }}>
+                <Text
+                  style={{
+                    fontSize: 18,
+                    fontWeight: '600',
+                    color: '#000',
+                    textAlign: 'center',
+                  }}>
                   +
                 </Text>
               </TouchableOpacity>
@@ -122,7 +145,19 @@ const ProductDetails = props => {
           color={'#0984e3'}
           title={'Add To Cart'}
           onPress={() => {
-            dispatch(addItemsCart(route.params.data));
+            // console.log('CHECK_DATA', route.params.data);
+            dispatch(
+              addItemsCart({
+                category: route.params.data.category,
+                description: route.params.data.description,
+                id: route.params.data.id,
+                image: route.params.data.image,
+                price: route.params.data.price,
+                qty: qty,
+                rating: route.params.data.rating,
+                title: route.params.data.title,
+              }),
+            );
           }}
         />
       </View>
@@ -171,6 +206,8 @@ const styles = StyleSheet.create({
   qtyBtn: {
     flexDirection: 'row',
     justifyContent: 'center',
+    width: '30%',
+    height: 43,
   },
   btn: {
     padding: 7,
@@ -178,6 +215,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginLeft: 8,
     marginRight: 8,
+    width: 30,
 
     // backgroundColor: 'red',
   },

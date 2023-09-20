@@ -10,6 +10,8 @@ import {
 import React, {useState} from 'react';
 import {useSelector} from 'react-redux';
 import Header from '../common/Header';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {useNavigation} from '@react-navigation/native';
 
 const RenderItem = ({item}) => {
   return (
@@ -18,7 +20,7 @@ const RenderItem = ({item}) => {
         activeOpacity={1}
         style={styles.productsItem}
         onPress={() => {
-          navigation.navigate('ProductDetails', {data: item});
+          //navigation.navigate('ProductDetails', {data: item});
         }}>
         <Image
           resizeMode="contain"
@@ -59,6 +61,7 @@ const RenderItem = ({item}) => {
 };
 
 const Wishlist = () => {
+  const navigation = useNavigation();
   const addWishListProducts = useSelector(state => state.wishlist);
   // const [wishList, setWishList] = useState(addWishListProducts.data);
   console.log('aaaaaaaaaaaaaaaaaaaaaa', addWishListProducts.data);
@@ -67,7 +70,12 @@ const Wishlist = () => {
   // );
   return (
     <View style={styles.container}>
-      <Header title={'WishList Items'} />
+      <Header
+        title={'WishList Items'}
+        rightIcon={'cart'}
+        leftIcon={'arrow-left'}
+        // onClickLeftIcon={() => navigation.goBack('Home')}
+      />
       <FlatList
         data={addWishListProducts.data}
         renderItem={({item}) => <RenderItem item={item} />}

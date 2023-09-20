@@ -5,6 +5,7 @@ import React, {useEffect, useState} from 'react';
 import Main from './screens/Main';
 import ProductDetails from './screens/ProductDetails';
 import Cart from './screens/Cart';
+import Wishlist from './tabs/Wishlist';
 
 const AppNavigation = () => {
   const Stack = createNativeStackNavigator();
@@ -23,6 +24,10 @@ const AppNavigation = () => {
         <Stack.Screen
           name="Cart"
           component={Cart}
+          options={{headerShown: false}}></Stack.Screen>
+        <Stack.Screen
+          name="Wishlist"
+          component={Wishlist}
           options={{headerShown: false}}></Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
