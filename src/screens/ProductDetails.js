@@ -6,6 +6,7 @@ import {
   Dimensions,
   TouchableOpacity,
   ScrollView,
+  Alert,
 } from 'react-native';
 import React, {useState} from 'react';
 import Header from '../common/Header';
@@ -15,10 +16,13 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useDispatch} from 'react-redux';
 import {addItemsWishList} from './redux/slices/WishList';
 import {addItemsCart} from './redux/slices/CartSlice';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import AskForLoginModal from '../common/AskForLoginModal';
 
 const ProductDetails = props => {
   const [selectHeart, setSelectHeart] = useState(false);
   const [qty, setQty] = useState(1);
+  const [modalVisible, setModalVisible] = useState(false);
   console.log('props', props);
   const navigation = useNavigation();
   const route = useRoute();
@@ -27,10 +31,23 @@ const ProductDetails = props => {
   const handleWishlist = () => {
     setSelectHeart(!selectHeart);
   };
+
+  const checkUserStatus = async () => {
+    let isUserLoggedIn = false;
+    const status = await AsyncStorage.getItem('IS_USER_LOGGED_IN');
+    if (status == null) {
+      isUserLoggedIn = false;
+      // Alert.alert('Please Log In');
+    } else {
+      isUserLoggedIn = true;
+    }
+    return isUserLoggedIn;
+  };
   return (
     <View style={styles.container}>
       <Header
         leftIcon={'arrow-left'}
+        isCart={true}
         rightIcon={'cart'}
         title={'Product-Details'}
         onClickLeftIcon={() => {
@@ -118,12 +135,30 @@ const ProductDetails = props => {
             </View>
           </View>
         </ScrollView>
+        <AskForLoginModal
+          modalVisible={modalVisible}
+          onClickLogin={() => {
+            setModalVisible(false);
+            navigation.navigate('Login');
+          }}
+          onClose={() => {
+            setModalVisible(false);
+          }}
+          onClickSignup={() => {
+            setModalVisible(false);
+            navigation.navigate('Signup');
+          }}
+        />
       </View>
       <TouchableOpacity
         style={styles.icon_heart}
         onPress={() => {
           handleWishlist();
-          dispatch(addItemsWishList(route.params.data));
+          if (checkUserStatus() === true) {
+            dispatch(addItemsWishList(route.params.data));
+          } else {
+            setModalVisible(true);
+          }
         }}>
         <Icon
           name={selectHeart ? 'cards-heart' : 'cards-heart-outline'}
@@ -146,18 +181,22 @@ const ProductDetails = props => {
           title={'Add To Cart'}
           onPress={() => {
             // console.log('CHECK_DATA', route.params.data);
-            dispatch(
-              addItemsCart({
-                category: route.params.data.category,
-                description: route.params.data.description,
-                id: route.params.data.id,
-                image: route.params.data.image,
-                price: route.params.data.price,
-                qty: qty,
-                rating: route.params.data.rating,
-                title: route.params.data.title,
-              }),
-            );
+            if (checkUserStatus() === true) {
+              dispatch(
+                addItemsCart({
+                  category: route.params.data.category,
+                  description: route.params.data.description,
+                  id: route.params.data.id,
+                  image: route.params.data.image,
+                  price: route.params.data.price,
+                  qty: qty,
+                  rating: route.params.data.rating,
+                  title: route.params.data.title,
+                }),
+              );
+            } else {
+              setModalVisible(true);
+            }
           }}
         />
       </View>

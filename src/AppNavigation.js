@@ -6,6 +6,9 @@ import Main from './screens/Main';
 import ProductDetails from './screens/ProductDetails';
 import Cart from './screens/Cart';
 import Wishlist from './tabs/Wishlist';
+import Login from './screens/Login';
+import Signup from './screens/Signup';
+import User from './tabs/User';
 
 const AppNavigation = () => {
   const Stack = createNativeStackNavigator();
@@ -26,8 +29,16 @@ const AppNavigation = () => {
           component={Cart}
           options={{headerShown: false}}></Stack.Screen>
         <Stack.Screen
-          name="Wishlist"
-          component={Wishlist}
+          name="Login"
+          component={Login}
+          options={{headerShown: false}}></Stack.Screen>
+        <Stack.Screen
+          name="Signup"
+          component={Signup}
+          options={{headerShown: false}}></Stack.Screen>
+        <Stack.Screen
+          name="User"
+          component={User}
           options={{headerShown: false}}></Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>

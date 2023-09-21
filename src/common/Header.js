@@ -9,7 +9,7 @@ import React, {useEffect} from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
-import {isCart} from 'react-native';
+
 const {width, height} = Dimensions.get('screen');
 
 const Header = ({
@@ -46,12 +46,21 @@ const Header = ({
         fr>
         <View
           style={{
-            height: 16,
-            width: 30,
+            height: 19,
+            width: 20,
             justifyContent: 'center',
             alignItems: 'center',
+            backgroundColor: '#fff',
+            borderWidth: 0.1,
+            borderRadius: 10,
+            alignSelf: 'center',
           }}>
-          <Text style={{color: '#fff'}}>{cartItems.data.length}</Text>
+          <Text
+            style={{
+              color: '#000',
+            }}>
+            {cartItems.data.length}
+          </Text>
         </View>
         <Icon name={rightIcon} size={30} style={styles.icon} />
       </TouchableOpacity>

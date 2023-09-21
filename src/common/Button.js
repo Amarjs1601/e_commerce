@@ -12,12 +12,19 @@ const Button = ({
   btnwidth,
   height,
   marginBottom,
+  marginTop,
 }) => {
   return (
     <TouchableOpacity
       style={[
         styles.button,
-        {backgroundColor: color, width: btnwidth, height: height, marginBottom},
+        {
+          backgroundColor: color,
+          width: btnwidth,
+          height: height,
+          marginBottom: marginBottom,
+          marginTop: marginTop,
+        },
       ]}
       onPress={onPress}>
       <View
