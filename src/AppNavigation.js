@@ -9,6 +9,7 @@ import Wishlist from './tabs/Wishlist';
 import Login from './screens/Login';
 import Signup from './screens/Signup';
 import User from './tabs/User';
+import Splash from './screens/Splash';
 
 const AppNavigation = () => {
   const Stack = createNativeStackNavigator();
@@ -16,6 +17,11 @@ const AppNavigation = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+        <Stack.Screen
+          name="Splash"
+          component={Splash}
+          options={{headerShown: false}}
+        />
         <Stack.Screen
           name="Main"
           component={Main}
