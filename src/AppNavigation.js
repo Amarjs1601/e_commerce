@@ -10,6 +10,7 @@ import Login from './screens/Login';
 import Signup from './screens/Signup';
 import User from './tabs/User';
 import Splash from './screens/Splash';
+import Checkout from './screens/Checkout';
 
 const AppNavigation = () => {
   const Stack = createNativeStackNavigator();
@@ -17,11 +18,11 @@ const AppNavigation = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen
+        {/* <Stack.Screen
           name="Splash"
           component={Splash}
           options={{headerShown: false}}
-        />
+        /> */}
         <Stack.Screen
           name="Main"
           component={Main}
@@ -45,6 +46,11 @@ const AppNavigation = () => {
         <Stack.Screen
           name="User"
           component={User}
+          options={{headerShown: false}}></Stack.Screen>
+
+        <Stack.Screen
+          name="Checkout"
+          component={Checkout}
           options={{headerShown: false}}></Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>

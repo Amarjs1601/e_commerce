@@ -18,8 +18,10 @@ import {
   removeItemsFromCart,
 } from './redux/slices/CartSlice';
 import {useNavigation} from '@react-navigation/native';
+import CheckoutLayout from '../common/CheckoutLayout';
 
 const RenderItem = ({item, index}) => {
+  const navigation = useNavigation();
   const dispatch = useDispatch();
   // console.log('RENDER--ITEMS-DATA------->', item);
 
@@ -29,7 +31,7 @@ const RenderItem = ({item, index}) => {
         activeOpacity={1}
         style={styles.productsItem}
         onPress={() => {
-          //   navigation.navigate('ProductDetails', {data: item});
+          navigation.push('ProductDetails', {data: item});
         }}>
         <Image
           resizeMode="contain"
@@ -108,6 +110,14 @@ const Cart = () => {
     setCartItem(cartItems.data);
   }, [cartItems]);
 
+  const getTotal = () => {
+    let total = 0;
+    cartItem.map(item => {
+      total = total + item.qty * item.price;
+    });
+    return total.toFixed(1);
+  };
+
   return (
     <View style={styles.container}>
       <Header
@@ -122,6 +132,23 @@ const Cart = () => {
         renderItem={({item}) => <RenderItem item={item} />}
         keyExtractor={(item, index) => index}
       />
+      {cartItem.length < 1 && (
+        <View style={styles.noItems}>
+          <Text
+            style={{
+              width: '100%',
+              textAlign: 'center',
+              fontSize: 20,
+              fontWeight: '900',
+              color: '#000',
+            }}>
+            {'No Items In Cart'}
+          </Text>
+        </View>
+      )}
+      {cartItem.length > 0 && (
+        <CheckoutLayout items={cartItem.length} total={getTotal()} />
+      )}
     </View>
   );
 };
@@ -131,7 +158,7 @@ export default Cart;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#ecf0f1',
     // width: '100%',
   },
   productsItem: {
@@ -161,5 +188,11 @@ const styles = StyleSheet.create({
     marginRight: 8,
 
     // backgroundColor: 'red',
+  },
+  noItems: {
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

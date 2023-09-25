@@ -22,42 +22,44 @@ const Login = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>{'Login'}</Text>
+    <>
+      <View style={styles.container}>
+        <Text style={styles.title}>{'Login'}</Text>
 
-      <TextInput
-        placeholder={'Enter Email'}
-        style={styles.input}
-        onChangeText={txt => setEmail(txt)}
-        value={email}
-      />
+        <TextInput
+          placeholder={'Enter Email'}
+          style={styles.input}
+          onChangeText={txt => setEmail(txt)}
+          value={email}
+        />
 
-      <TextInput
-        placeholder={'Enter Password'}
-        style={styles.input}
-        onChangeText={txt => setPassword(txt)}
-        value={password}
-      />
+        <TextInput
+          placeholder={'Enter Password'}
+          style={styles.input}
+          onChangeText={txt => setPassword(txt)}
+          value={password}
+        />
 
-      <Button
-        color={'#0786DAFD'}
-        btnwidth={'85%'}
-        title={'Log In'}
-        marginTop={20}
-        onPress={() => {
-          loginUser();
-          // navigation.navigate('User');
-        }}
-      />
+        <Button
+          color={'#0786DAFD'}
+          btnwidth={'85%'}
+          title={'Log In'}
+          marginTop={20}
+          onPress={() => {
+            loginUser();
+            // navigation.navigate('User');
+          }}
+        />
 
-      <Text
-        onPress={() => {
-          navigation.navigate('Signup');
-        }}
-        style={styles.loginText}>
-        {'Sign up'}{' '}
-      </Text>
-    </View>
+        <Text
+          onPress={() => {
+            navigation.navigate('Signup');
+          }}
+          style={styles.loginText}>
+          {'Sign up'}{' '}
+        </Text>
+      </View>
+    </>
   );
 };
 

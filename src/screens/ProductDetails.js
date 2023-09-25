@@ -180,23 +180,24 @@ const ProductDetails = props => {
           color={'#0984e3'}
           title={'Add To Cart'}
           onPress={() => {
-            // console.log('CHECK_DATA', route.params.data);
-            if (checkUserStatus() === true) {
-              dispatch(
-                addItemsCart({
-                  category: route.params.data.category,
-                  description: route.params.data.description,
-                  id: route.params.data.id,
-                  image: route.params.data.image,
-                  price: route.params.data.price,
-                  qty: qty,
-                  rating: route.params.data.rating,
-                  title: route.params.data.title,
-                }),
-              );
-            } else {
-              setModalVisible(true);
-            }
+            console.log('CHECK_DATA', route.params.data);
+            dispatch(addItemsCart(route.params.data));
+            // if (checkUserStatus() === true) {
+            //   dispatch(
+            //     addItemsCart({
+            //       category: route.params.data.category,
+            //       description: route.params.data.description,
+            //       id: route.params.data.id,
+            //       image: route.params.data.image,
+            //       price: route.params.data.price,
+            //       qty: qty,
+            //       rating: route.params.data.rating,
+            //       title: route.params.data.title,
+            //     }),
+            //   );
+            // } else {
+            //   setModalVisible(true);
+            // }
           }}
         />
       </View>
