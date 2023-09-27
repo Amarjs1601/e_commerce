@@ -6,10 +6,11 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
+  Alert,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import Header from '../common/Header';
-import {useNavigation} from '@react-navigation/native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   addItemsCart,
@@ -17,87 +18,11 @@ import {
   removeItemsFromCart,
 } from './redux/slices/CartSlice';
 import Button from '../common/Button';
-
-const RenderItem = ({item, index}) => {
-  const navigation = useNavigation();
-  const dispatch = useDispatch();
-  // console.log('RENDER--ITEMS-DATA------->', item);
-
-  return (
-    <View style={{padding: 10, width: '100%'}}>
-      <TouchableOpacity
-        activeOpacity={1}
-        style={styles.productsItem}
-        onPress={() => {
-          navigation.push('ProductDetails', {data: item});
-        }}>
-        <Image
-          resizeMode="contain"
-          source={{uri: item.image}}
-          style={styles.productsImage}
-        />
-        <View>
-          <Text
-            numberOfLines={2}
-            style={{
-              width: '30%',
-              fontSize: 15,
-              fontWeight: 600,
-              color: '#000',
-            }}>
-            {/* {item.title.length > 30
-                  ? item.title.substring(0, 30) + '...'
-                  : item.title} */}
-            {item.title}
-          </Text>
-          <Text
-            numberOfLines={2}
-            style={
-              {
-                //   width: '20%',
-                // fontSize: 12,
-              }
-            }>
-            {/* {item.description.length > 30
-                ? item.description.substring(0, 30) + '...'
-                :  */}
-            {/* // } */}
-            {item.description}
-          </Text>
-          <View
-            style={{
-              ...styles.qtyView,
-              //   backgroundColor: 'red',
-              width: 350,
-              marginTop: '1%',
-            }}>
-            <Text style={{...styles.price}}>{'₹' + item.price}</Text>
-            <TouchableOpacity
-              style={styles.btn}
-              onPress={() => {
-                if (item.qty > 1) {
-                  dispatch(reduceItemsFromCart(item));
-                } else dispatch(removeItemsFromCart(index));
-              }}>
-              <Text>-</Text>
-            </TouchableOpacity>
-            <Text style={{marginLeft: 0}}>{item.qty}</Text>
-            <TouchableOpacity
-              style={styles.btn}
-              onPress={() => {
-                dispatch(addItemsCart(item));
-              }}>
-              <Text>+</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </TouchableOpacity>
-    </View>
-  );
-};
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Checkout = () => {
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const cartItems = useSelector(state => state.cart);
   const [cartItem, setCartItem] = useState([]);
@@ -118,6 +43,16 @@ const Checkout = () => {
     return total.toFixed(1);
   };
 
+  useEffect(() => {
+    getSelectedAddress();
+  }, [isFocused]);
+
+  const getSelectedAddress = async () => {
+    // setSelectedAddress(await AsyncStorage.getItem('MY_ADDRESS'));
+    const selectedAdd = await AsyncStorage.getItem('MY_ADDRESS');
+    setSelectedAddress(JSON.parse(selectedAdd));
+  };
+
   return (
     <View style={styles.container}>
       <Header
@@ -129,7 +64,82 @@ const Checkout = () => {
         <View>
           <FlatList
             data={cartItem}
-            renderItem={({item}) => <RenderItem item={item} />}
+            // renderItem={({item}) => <RenderItem item={item} />}
+            renderItem={({item, index}) => {
+              return (
+                <View style={{padding: 10, width: '100%'}}>
+                  <TouchableOpacity
+                    activeOpacity={1}
+                    style={styles.productsItem}
+                    onPress={() => {
+                      navigation.push('ProductDetails', {data: item});
+                    }}>
+                    <Image
+                      resizeMode="contain"
+                      source={{uri: item.image}}
+                      style={styles.productsImage}
+                    />
+                    <View>
+                      <Text
+                        numberOfLines={2}
+                        style={{
+                          width: '30%',
+                          fontSize: 15,
+                          fontWeight: 600,
+                          color: '#000',
+                        }}>
+                        {/* {item.title.length > 30
+                                  ? item.title.substring(0, 30) + '...'
+                                  : item.title} */}
+                        {item.title}
+                      </Text>
+                      <Text
+                        numberOfLines={2}
+                        style={
+                          {
+                            //   width: '20%',
+                            // fontSize: 12,
+                          }
+                        }>
+                        {/* {item.description.length > 30
+                                ? item.description.substring(0, 30) + '...'
+                                :  */}
+                        {/* // } */}
+                        {item.description}
+                      </Text>
+                      <View
+                        style={{
+                          ...styles.qtyView,
+                          //   backgroundColor: 'red',
+                          width: 350,
+                          marginTop: '1%',
+                        }}>
+                        <Text style={{...styles.price}}>
+                          {'₹' + item.price}
+                        </Text>
+                        <TouchableOpacity
+                          style={styles.btn}
+                          onPress={() => {
+                            if (item.qty > 1) {
+                              dispatch(reduceItemsFromCart(item));
+                            } else dispatch(removeItemsFromCart(index));
+                          }}>
+                          <Text>-</Text>
+                        </TouchableOpacity>
+                        <Text style={{marginLeft: 0}}>{item.qty}</Text>
+                        <TouchableOpacity
+                          style={styles.btn}
+                          onPress={() => {
+                            dispatch(addItemsCart(item));
+                          }}>
+                          <Text>+</Text>
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              );
+            }}
             keyExtractor={(item, index) => index}
           />
         </View>
@@ -151,7 +161,7 @@ const Checkout = () => {
             }
             style={[
               styles.img,
-              {tintColor: selectMethod == 0 ? 'blue' : 'black'},
+              {tintColor: selectMethod == 0 ? '#0984e3' : '#000'},
             ]}
           />
           <Text style={styles.paymentMethodsTxt}>Credit Card</Text>
@@ -167,7 +177,7 @@ const Checkout = () => {
             }
             style={[
               styles.img,
-              {tintColor: selectMethod == 1 ? 'blue' : 'black'},
+              {tintColor: selectMethod == 1 ? '#0984e3' : '#000'},
             ]}
           />
           <Text style={styles.paymentMethodsTxt}>Debit Card</Text>
@@ -183,7 +193,7 @@ const Checkout = () => {
             }
             style={[
               styles.img,
-              {tintColor: selectMethod == 2 ? 'blue' : 'black'},
+              {tintColor: selectMethod == 2 ? '#0984e3' : '#000'},
             ]}
           />
           <Text style={styles.paymentMethodsTxt}>Upi</Text>
@@ -199,30 +209,41 @@ const Checkout = () => {
             }
             style={[
               styles.img,
-              {tintColor: selectMethod == 3 ? 'blue' : 'black'},
+              {tintColor: selectMethod == 3 ? '#0984e3' : '#000'},
             ]}
           />
           <Text style={styles.paymentMethodsTxt}>Pay on Delivery</Text>
         </TouchableOpacity>
         <TouchableOpacity>
-          <Text style={styles.title}>Address</Text>
-          <Text
-            style={[
-              styles.title,
-              {marginTop: 10, fontSize: 16, color: '#636363'},
-            ]}>
-            {selectedAddress}
-          </Text>
+          <View style={styles.addressView}>
+            <Text style={styles.title}>Address</Text>
+            <Text
+              style={[
+                styles.title,
+                {textDecorationLine: 'underline', color: '#2980b9'},
+              ]}
+              onPress={() => navigation.navigate('Addresses')}>
+              Edit Address
+            </Text>
+          </View>
+          <View style={styles.addressStyle}>
+            <Text style={styles.textStyle}>{`${selectedAddress.city}`}</Text>
+            <Text style={styles.textStyle}>{`,${selectedAddress.state}`}</Text>
+            <Text
+              style={styles.textStyle}>{`,${selectedAddress.pincode}`}</Text>
+            <Text style={styles.textStyle}>{`,${selectedAddress.type}`}</Text>
+          </View>
         </TouchableOpacity>
+
+        <View>
+          <Button
+            btnwidth={'90%'}
+            marginTop={'20%'}
+            title={'Pay & Order'}
+            color={'#0984e3'}
+          />
+        </View>
       </ScrollView>
-      <View>
-        <Button
-          btnwidth={'90%'}
-          marginTop={'20%'}
-          title={'Pay & Order'}
-          color={'blue'}
-        />
-      </View>
     </View>
   );
 };
@@ -297,6 +318,27 @@ const styles = StyleSheet.create({
   paymentMethodsTxt: {
     width: '100%',
     marginLeft: 20,
+    fontSize: 15,
+    color: '#000',
+  },
+  addressView: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingLeft: 10,
+    paddingRight: 20,
+  },
+  addressStyle: {
+    flexDirection: 'row',
+    // backgroundColor: 'red',
+    paddingLeft: 30,
+    marginTop: 10,
+    alignSelf: 'flex-start',
+  },
+  textStyle: {
+    width: 60,
+    fontWeight: '600',
     fontSize: 15,
     color: '#000',
   },

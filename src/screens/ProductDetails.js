@@ -23,7 +23,7 @@ const ProductDetails = props => {
   const [selectHeart, setSelectHeart] = useState(false);
   const [qty, setQty] = useState(1);
   const [modalVisible, setModalVisible] = useState(false);
-  console.log('props', props);
+  // console.log('props', props);
   const navigation = useNavigation();
   const route = useRoute();
   const dispatch = useDispatch();
@@ -154,11 +154,12 @@ const ProductDetails = props => {
         style={styles.icon_heart}
         onPress={() => {
           handleWishlist();
-          if (checkUserStatus() === true) {
-            dispatch(addItemsWishList(route.params.data));
-          } else {
-            setModalVisible(true);
-          }
+          dispatch(addItemsWishList(route.params.data));
+          // if (checkUserStatus() === true) {
+          //   dispatch(addItemsWishList(route.params.data));
+          // } else {
+          //   setModalVisible(true);
+          // }
         }}>
         <Icon
           name={selectHeart ? 'cards-heart' : 'cards-heart-outline'}
@@ -180,7 +181,7 @@ const ProductDetails = props => {
           color={'#0984e3'}
           title={'Add To Cart'}
           onPress={() => {
-            console.log('CHECK_DATA', route.params.data);
+            //    console.log('CHECK_DATA', route.params.data);
             dispatch(addItemsCart(route.params.data));
             // if (checkUserStatus() === true) {
             //   dispatch(

@@ -11,6 +11,8 @@ import Signup from './screens/Signup';
 import User from './tabs/User';
 import Splash from './screens/Splash';
 import Checkout from './screens/Checkout';
+import Addresses from './screens/Addresses';
+import AddAddresses from './screens/AddAddresses';
 
 const AppNavigation = () => {
   const Stack = createNativeStackNavigator();
@@ -51,6 +53,14 @@ const AppNavigation = () => {
         <Stack.Screen
           name="Checkout"
           component={Checkout}
+          options={{headerShown: false}}></Stack.Screen>
+        <Stack.Screen
+          name="Addresses"
+          component={Addresses}
+          options={{headerShown: false}}></Stack.Screen>
+        <Stack.Screen
+          name="AddAddresses"
+          component={AddAddresses}
           options={{headerShown: false}}></Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>

@@ -49,7 +49,7 @@ const Home = () => {
         <FlatList
           data={products}
           renderItem={({item, index}) => {
-            console.log('products______Data', item);
+            //   console.log('products______Data', item);
             return (
               <TouchableOpacity
                 activeOpacity={1}
