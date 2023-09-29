@@ -90,7 +90,7 @@ const ProductDetails = props => {
               {/* {'Price' + ' : ' + '$' + route.params.data.price} */}
               {`₹${route.params.data.price}`}
             </Text>
-            <View style={styles.qtyBtn}>
+            {/* <View style={styles.qtyBtn}>
               <TouchableOpacity
                 style={styles.btn}
                 onPress={() => {
@@ -132,7 +132,7 @@ const ProductDetails = props => {
                   +
                 </Text>
               </TouchableOpacity>
-            </View>
+            </View> */}
           </View>
         </ScrollView>
         <AskForLoginModal
@@ -213,8 +213,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   banner: {
-    width: 200,
-    height: 200,
+    width: 300,
+    height: 380,
   },
   title: {
     fontSize: 20,

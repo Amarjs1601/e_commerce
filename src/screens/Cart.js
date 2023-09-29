@@ -26,7 +26,13 @@ const RenderItem = ({item, index}) => {
   // console.log('RENDER--ITEMS-DATA------->', item);
 
   return (
-    <View style={{padding: 10, width: '100%'}}>
+    <View
+      style={{
+        padding: 10,
+        width: '100%',
+        backgroundColor: '#fff',
+        marginBottom: 10,
+      }}>
       <TouchableOpacity
         activeOpacity={1}
         style={styles.productsItem}
@@ -52,19 +58,10 @@ const RenderItem = ({item, index}) => {
                 : item.title} */}
             {item.title}
           </Text>
-          <Text
-            numberOfLines={2}
-            style={
-              {
-                //   width: '20%',
-                // fontSize: 12,
-              }
-            }>
-            {/* {item.description.length > 30
-              ? item.description.substring(0, 30) + '...'
-              :  */}
-            {/* // } */}
-            {item.description}
+          <Text numberOfLines={2} style={{width: 280}}>
+            {item.description.substring(0, 70) + '...'}
+
+            {/* {item.description.substring(0, 120)} */}
           </Text>
           <View
             style={{
@@ -164,14 +161,13 @@ const styles = StyleSheet.create({
   productsItem: {
     // width: '100%',
     // height: 100,
-    backgroundColor: '#fff',
     alignItems: 'center',
     marginTop: 10,
     flexDirection: 'row',
   },
   productsImage: {
     width: 100,
-    height: 100,
+    height: 150,
   },
 
   price: {color: '#27ae60', width: '50%'},

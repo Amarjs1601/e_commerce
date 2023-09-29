@@ -73,8 +73,9 @@ const Wishlist = () => {
       <Header
         title={'WishList Items'}
         rightIcon={'cart'}
-        leftIcon={'arrow-left'}
+        // leftIcon={'arrow-left'}
         // onClickLeftIcon={() => navigation.goBack('Home')}
+        // onClickLeftIcon={() => navigation.navigate('Home')}
       />
       <FlatList
         data={addWishListProducts.data}

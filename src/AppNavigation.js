@@ -13,6 +13,7 @@ import Splash from './screens/Splash';
 import Checkout from './screens/Checkout';
 import Addresses from './screens/Addresses';
 import AddAddresses from './screens/AddAddresses';
+import Home from './tabs/Home';
 
 const AppNavigation = () => {
   const Stack = createNativeStackNavigator();
@@ -62,6 +63,14 @@ const AppNavigation = () => {
           name="AddAddresses"
           component={AddAddresses}
           options={{headerShown: false}}></Stack.Screen>
+        {/* <Stack.Screen
+          name="Home"
+          component={Home}
+          options={{headerShown: false}}></Stack.Screen> */}
+        {/* <Stack.Screen
+          name="Wishlist"
+          component={Wishlist}
+          options={{headerShown: false}}></Stack.Screen> */}
       </Stack.Navigator>
     </NavigationContainer>
   );
