@@ -37,6 +37,7 @@ const AddAddresses = () => {
 
   //   const uuid = uuidv4();
   //   console.log('Generated UUID:', uuid);
+
   return (
     <View style={styles.container}>
       <Header

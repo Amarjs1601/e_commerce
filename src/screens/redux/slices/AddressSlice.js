@@ -12,7 +12,7 @@ export const AddressSlice = createSlice({
   reducers: {
     addAddress(state, action) {
       state.data.push(action.payload);
-      console.log('ADD-ADDRESS------------------>', action.payload);
+      // console.log('ADD-ADDRESS------------------>', action.payload);
     },
     deleteAddress(state, action) {
       let newArr = state.data.filter(item => {
@@ -30,6 +30,8 @@ export const AddressSlice = createSlice({
           item.type = action.payload.type;
         }
       });
+      console.log('AMARDEEP-------------->', state.data);
+
       state.data = temp;
     },
   },

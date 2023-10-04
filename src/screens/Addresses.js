@@ -27,6 +27,10 @@ const Addresses = () => {
   const defaultAddress = async item => {
     // console.log('ITEM---------->', item);
     await AsyncStorage.setItem('MY_ADDRESS', JSON.stringify(item));
+    // await AsyncStorage.setItem(
+    //   'MY_ADDRESS',
+    //   '' + item.city + ',' + item.state + ',' + item.pincode + ',' + item.type,
+    // );
     navigation.goBack();
   };
 

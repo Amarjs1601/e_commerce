@@ -20,6 +20,8 @@ import {
 } from './redux/slices/CartSlice';
 import Button from '../common/Button';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {orderItems} from './redux/slices/OrderSlice';
+import {emptyCart} from './redux/slices/CartSlice';
 
 const Checkout = () => {
   const navigation = useNavigation();
@@ -31,14 +33,17 @@ const Checkout = () => {
   const [selectedAddress, setSelectedAddress] = useState(
     'Please Select Address',
   );
+  // console.log('AMARDEEP------------------->', selectedAddress);
 
   useEffect(() => {
     setCartItem(cartItems.data);
+    // console.log('VVVVVVV======>', cartItems.data);
   }, [cartItems]);
 
   const getTotal = () => {
     let total = 0;
     cartItem.map(item => {
+      console.log(item);
       total = total + item.qty * item.price;
     });
     return total.toFixed(1);
@@ -51,13 +56,79 @@ const Checkout = () => {
   const getSelectedAddress = async () => {
     // setSelectedAddress(await AsyncStorage.getItem('MY_ADDRESS'));
     const selectedAdd = await AsyncStorage.getItem('MY_ADDRESS');
+    // console.log('xxxxxxxxxxxxxxxxxxxxx', selectedAdd);
     setSelectedAddress(JSON.parse(selectedAdd));
+  };
+
+  const orderPlace = paymentId => {
+    const day = new Date().getDate();
+    const month = new Date().getMonth() + 1;
+    const year = new Date().getFullYear();
+    const hours = new Date().getHours();
+    const minutes = new Date().getMinutes();
+    let ampm = '';
+    if (hours > 12) {
+      ampm = 'pm';
+    } else {
+      ampm = 'am';
+    }
+    const data = {
+      items: cartItem,
+      amount: '₹' + getTotal(),
+      address: selectedAddress,
+      paymentId: paymentId,
+      paymentStatus: selectMethod == 3 ? 'pending' : 'Successful',
+      createdAt:
+        day +
+        '/' +
+        month +
+        '/' +
+        year +
+        ' ' +
+        hours +
+        ':' +
+        minutes +
+        ' ' +
+        ampm,
+    };
+    dispatch(orderItems(data));
+    dispatch(emptyCart([]));
+    navigation.navigate('OrderSuccess');
+  };
+
+  const payNow = () => {
+    var options = {
+      description: 'Credits towards consultation',
+      image: 'https://i.imgur.com/3g7nmJC.png',
+      currency: 'INR',
+      key: 'rzp_test_mmkTw8ezaOxhVg', // Your api key
+      amount: getTotal() * 100,
+      name: 'foo',
+      prefill: {
+        email: 'void@razorpay.com',
+        contact: '9191919191',
+        name: 'Razorpay Software',
+      },
+      theme: {color: '#2980b9'},
+    };
+
+    RazorpayCheckout.open(options)
+      .then(data => {
+        // handle success
+        // Alert.alert(`Success: ${data.razorpay_payment_id}`);
+        orderPlace(data.razorpay_payment_id);
+      })
+      .catch(error => {
+        // handle failure
+        Alert.alert(`Error: ${error.code} | ${error.description}`);
+      });
   };
 
   return (
     <View style={styles.container}>
       <View>
         <Header
+          title={'Checkout'}
           leftIcon={'arrow-left'}
           onClickLeftIcon={() => navigation.goBack()}
         />
@@ -231,11 +302,9 @@ const Checkout = () => {
             </Text>
           </View>
           <View style={styles.addressStyle}>
-            <Text
-              style={[
-                styles.textStyle,
-                {width: '100%'},
-              ]}>{`City: ${selectedAddress.city}`}</Text>
+            <Text style={[styles.textStyle, {width: '100%'}]}>
+              {`City: ${selectedAddress.city}`}
+            </Text>
             <Text
               style={[
                 styles.textStyle,
@@ -262,30 +331,7 @@ const Checkout = () => {
           title={'Pay & Order'}
           color={'#0984e3'}
           onPress={() => {
-            var options = {
-              description: 'Credits towards consultation',
-              image: 'https://i.imgur.com/3g7nmJC.png',
-              currency: 'INR',
-              key: 'rzp_test_mmkTw8ezaOxhVg', // Your api key
-              amount: '5000',
-              name: 'foo',
-              prefill: {
-                email: 'void@razorpay.com',
-                contact: '9191919191',
-                name: 'Razorpay Software',
-              },
-              theme: {color: '#2980b9'},
-            };
-
-            RazorpayCheckout.open(options)
-              .then(data => {
-                // handle success
-                Alert.alert(`Success: ${data.razorpay_payment_id}`);
-              })
-              .catch(error => {
-                // handle failure
-                Alert.alert(`Error: ${error.code} | ${error.description}`);
-              });
+            payNow();
           }}
         />
       </View>

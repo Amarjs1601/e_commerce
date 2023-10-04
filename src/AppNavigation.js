@@ -14,6 +14,8 @@ import Checkout from './screens/Checkout';
 import Addresses from './screens/Addresses';
 import AddAddresses from './screens/AddAddresses';
 import Home from './tabs/Home';
+import OrderSuccess from './screens/OrderSuccess';
+import Order from './screens/Order';
 
 const AppNavigation = () => {
   const Stack = createNativeStackNavigator();
@@ -21,11 +23,11 @@ const AppNavigation = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        {/* <Stack.Screen
+        <Stack.Screen
           name="Splash"
           component={Splash}
           options={{headerShown: false}}
-        /> */}
+        />
         <Stack.Screen
           name="Main"
           component={Main}
@@ -63,14 +65,24 @@ const AppNavigation = () => {
           name="AddAddresses"
           component={AddAddresses}
           options={{headerShown: false}}></Stack.Screen>
-        {/* <Stack.Screen
+        <Stack.Screen
           name="Home"
           component={Home}
-          options={{headerShown: false}}></Stack.Screen> */}
+          options={{headerShown: false}}></Stack.Screen>
         {/* <Stack.Screen
           name="Wishlist"
           component={Wishlist}
           options={{headerShown: false}}></Stack.Screen> */}
+        <Stack.Screen
+          name="OrderSuccess"
+          component={OrderSuccess}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Order"
+          component={Order}
+          options={{headerShown: false}}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

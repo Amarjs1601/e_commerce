@@ -12,6 +12,7 @@ import Header from '../common/Header';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
 import {addProducts} from '../screens/redux/slices/ProductsSlice';
+import HomeScreen from '../screens/HomeScreen';
 
 const Home = () => {
   const dispatch = useDispatch();
