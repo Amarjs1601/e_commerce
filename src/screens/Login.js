@@ -3,6 +3,7 @@ import React, {useState} from 'react';
 import Button from '../common/Button';
 import {useNavigation} from '@react-navigation/native';
 import firestore from '@react-native-firebase/firestore';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Login = () => {
   const navigation = useNavigation();
@@ -11,14 +12,33 @@ const Login = () => {
   const [password, setPassword] = useState('');
 
   const loginUser = () => {
-    firestore()
-      .collection('Users')
-      // Filter results
-      .where('email', '==', email)
-      .get()
-      .then(querySnapshot => {
-        console.log(querySnapshot.docs[0]._data);
-      });
+    try {
+      firestore()
+        .collection('Users')
+        // Filter results
+        .where('email', '==', email)
+        .get()
+        .then(res => {
+          if (res.docs != []) {
+            goToNext(
+              res.docs[0].data().email,
+              res.docs[0].data().password,
+              res.docs[0].data().userID,
+            );
+          } else {
+            console.log('USER NOT FOUND!!');
+          }
+        });
+    } catch (error) {
+      console.log('user NOt exist !!');
+    }
+  };
+
+  const goToNext = async (email, password, userID) => {
+    await AsyncStorage.setItem('EMAIL', email);
+    await AsyncStorage.setItem('PASSWORD', password);
+    await AsyncStorage.setItem('USERID', userID);
+    navigation.navigate('Main');
   };
 
   return (
@@ -52,9 +72,9 @@ const Login = () => {
         />
 
         <Text
-          onPress={() => {
-            navigation.navigate('Signup');
-          }}
+          // onPress={() => {
+          //   navigation.navigate('Signup');
+          // }}
           style={styles.loginText}>
           {'Sign up'}{' '}
         </Text>

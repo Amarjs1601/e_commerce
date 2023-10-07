@@ -3,8 +3,10 @@ import React, {useState} from 'react';
 import Button from '../common/Button';
 import {useNavigation} from '@react-navigation/native';
 import firestore from '@react-native-firebase/firestore';
+import uuid from 'react-native-uuid';
 const Signup = () => {
   const navigation = useNavigation();
+  const userID = uuid.v4();
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -15,12 +17,14 @@ const Signup = () => {
   const addUser = () => {
     firestore()
       .collection('Users')
-      .add({
+      .doc(userID)
+      .set({
         name: name,
         email: email,
         mobile: mobile,
         password: password,
         confirmPassword: confirmPassword,
+        userID: userID,
       })
       .then(() => {
         console.log('User added!');
